@@ -195,7 +195,15 @@ export default function AdminDashboard({ onLogout }) {
         showToast('Data exported!', 'success');
     };
 
-    // Import
+    // Clipboard Copy
+    const copyToClipboard = () => {
+        const data = DB.exportAll();
+        navigator.clipboard.writeText(JSON.stringify(data, null, 2))
+            .then(() => showToast('Data copied to clipboard!', 'success'))
+            .catch(() => showToast('Failed to copy data', 'error'));
+    };
+
+    // Import from File
     const importData = (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -217,8 +225,30 @@ export default function AdminDashboard({ onLogout }) {
         reader.readAsText(file);
     };
 
+    // Clipboard Paste
+    const pasteFromClipboard = async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            if (!text) {
+                showToast('Clipboard is empty!', 'error');
+                return;
+            }
+            const data = JSON.parse(text);
+            DB.importAll(data);
+            showToast('Data imported from clipboard!', 'success');
+            setHeroForm(DB.get('hero'));
+            setAboutForm(DB.get('about'));
+            setContactForm(DB.get('contact'));
+            setSettingsForm({ ...DB.get('settings'), newPassword: '' });
+            refresh();
+        } catch (err) {
+            showToast('Invalid data in clipboard!', 'error');
+        }
+    };
+
     // Reset
     const resetData = () => {
+
         if (confirm('Are you sure you want to reset ALL data to defaults? This cannot be undone.')) {
             DB.resetAll();
             showToast('All data reset to defaults!', 'success');
@@ -305,8 +335,39 @@ export default function AdminDashboard({ onLogout }) {
                                 <h3>Welcome to Admin Panel</h3>
                                 <p>Manage all content of your website from here. Use the sidebar to navigate between different sections.</p>
                             </div>
+
+                            <div className="dash-data-management glass-card" style={{ marginTop: '20px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                                    <h3><i className="fas fa-database"></i> Data Management</h3>
+                                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Move your changes between Local and Live sites</span>
+                                </div>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
+                                    <button className="btn btn-outline" onClick={copyToClipboard} style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '15px', height: 'auto' }}>
+                                        <i className="fas fa-copy" style={{ fontSize: '1.2rem' }}></i>
+                                        <strong>Copy Data</strong>
+                                        <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Copy all content to clipboard</span>
+                                    </button>
+                                    <button className="btn btn-outline" onClick={pasteFromClipboard} style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '15px', height: 'auto' }}>
+                                        <i className="fas fa-paste" style={{ fontSize: '1.2rem' }}></i>
+                                        <strong>Paste Data</strong>
+                                        <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Import content from clipboard</span>
+                                    </button>
+                                    <button className="btn btn-outline" onClick={exportData} style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '15px', height: 'auto' }}>
+                                        <i className="fas fa-download" style={{ fontSize: '1.2rem' }}></i>
+                                        <strong>Download JSON</strong>
+                                        <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Save data to a .json file</span>
+                                    </button>
+                                    <label className="btn btn-outline" style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '15px', height: 'auto', textAlign: 'center', cursor: 'pointer' }}>
+                                        <i className="fas fa-upload" style={{ fontSize: '1.2rem' }}></i>
+                                        <strong>Upload JSON</strong>
+                                        <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Restore from a .json file</span>
+                                        <input type="file" accept=".json" onChange={importData} style={{ display: 'none' }} />
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     )}
+
 
                     {/* Hero Panel */}
                     {activePanel === 'hero' && (
@@ -607,12 +668,15 @@ export default function AdminDashboard({ onLogout }) {
                                 <h3><i className="fas fa-database"></i> Data Management</h3>
                                 <p style={{ color: 'var(--text-secondary)', marginBottom: '15px' }}>Export or import your website data</p>
                                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                                    <button className="btn btn-outline" onClick={copyToClipboard}><i className="fas fa-copy"></i> Copy Data</button>
+                                    <button className="btn btn-outline" onClick={pasteFromClipboard}><i className="fas fa-paste"></i> Paste Data</button>
                                     <button className="btn btn-outline" onClick={exportData}><i className="fas fa-download"></i> Export Data</button>
                                     <label className="btn btn-outline" style={{ cursor: 'pointer' }}>
                                         <i className="fas fa-upload"></i> Import Data
                                         <input type="file" accept=".json" onChange={importData} style={{ display: 'none' }} />
                                     </label>
                                     <button className="btn btn-danger" onClick={resetData}><i className="fas fa-trash"></i> Reset All Data</button>
+
                                 </div>
                             </div>
                         </div>
