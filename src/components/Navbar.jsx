@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
     const [menuOpen, setMenuOpen] = useState(false);
+    const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, transform: 'translateX(0)', opacity: 0 });
+    const navLinksRef = useRef(null);
 
     useEffect(() => {
         const onScroll = () => {
@@ -23,6 +25,37 @@ export default function Navbar() {
         window.addEventListener('scroll', onScroll);
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
+
+    const updateIndicator = () => {
+        const activeLink = navLinksRef.current?.querySelector(`.nav-link[data-section="${activeSection}"]`);
+        if (activeLink) {
+            setIndicatorStyle({
+                width: activeLink.offsetWidth,
+                transform: `translateX(${activeLink.offsetLeft}px)`,
+                opacity: 1
+            });
+        }
+    };
+
+    // Update indicator when active section changes or window resizes
+    useEffect(() => {
+        updateIndicator();
+        window.addEventListener('resize', updateIndicator);
+        return () => window.removeEventListener('resize', updateIndicator);
+    }, [activeSection]);
+
+    const handleHover = (e) => {
+        const target = e.currentTarget;
+        setIndicatorStyle({
+            width: target.offsetWidth,
+            transform: `translateX(${target.offsetLeft}px)`,
+            opacity: 1
+        });
+    };
+
+    const handleMouseLeave = () => {
+        updateIndicator();
+    };
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
@@ -51,13 +84,15 @@ export default function Navbar() {
                         <span className="logo-text">BIKKI</span>
                         <span className="logo-full">GURUNG</span>
                     </a>
-                    <ul className="nav-links">
+                    <ul className="nav-links" ref={navLinksRef} onMouseLeave={handleMouseLeave}>
+                        <div className="nav-indicator" style={indicatorStyle}></div>
                         {navItems.map(item => (
                             <li key={item.id}>
                                 <a
                                     href={`#${item.id}`}
                                     className={`nav-link${activeSection === item.id ? ' active' : ''}`}
                                     data-section={item.id}
+                                    onMouseEnter={handleHover}
                                 >
                                     {item.label}
                                 </a>
