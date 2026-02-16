@@ -1,22 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Bikki Gurung - Nepali singer, musician, and songwriter. Official website featuring music, events, gallery, and more." />
+    <meta name="description"
+        content="Bikki Gurung - Nepali singer, musician, and songwriter. Official website featuring music, events, gallery, and more." />
+    <meta name="theme-color" content="#0a0a0f" />
+    <link rel="canonical" href="https://bikkigurung.com/" />
     <title>Bikki Gurung | Official Website</title>
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Favicon (inline SVG data URI to avoid 404) -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238b5cf6'/%3E%3Ctext x='16' y='23' font-family='sans-serif' font-size='20' font-weight='bold' fill='white' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E" />
 
-    <!-- Google Fonts -->
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Bikki Gurung | Official Website" />
+    <meta property="og:description"
+        content="Bikki Gurung - Nepali singer, musician, and songwriter. Official website featuring music, events, gallery, and more." />
+    <meta property="og:url" content="https://bikkigurung.com/" />
+    <meta property="og:site_name" content="Bikki Gurung" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bikki Gurung | Official Website" />
+    <meta name="twitter:description"
+        content="Bikki Gurung - Nepali singer, musician, and songwriter. Official website featuring music, events, gallery, and more." />
+
+    <!-- Preconnect hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+
+    <!-- Google Fonts (deferred to avoid render-blocking) -->
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet" />
+    </noscript>
+
+    <!-- Font Awesome (deferred to avoid render-blocking) -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        media="print" onload="this.media='all'" />
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    </noscript>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MusicGroup",
+        "name": "Bikki Gurung",
+        "description": "Nepali singer, musician, and songwriter creating soulful melodies.",
+        "url": "https://bikkigurung.com",
+        "genre": "Nepali Music",
+        "member": {
+            "@type": "Person",
+            "name": "Bikki Gurung",
+            "jobTitle": "Singer, Musician, Songwriter"
+        },
+        "sameAs": [
+            "https://youtube.com/@bikkigurung",
+            "https://instagram.com/bikkigurung",
+            "https://facebook.com/bikkigurung",
+            "https://tiktok.com/@bikkigurung",
+            "https://open.spotify.com/artist/bikkigurung"
+        ]
+    }
+    </script>
 </head>
+
 <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
 </body>
+
 </html>

@@ -9,7 +9,7 @@ const DB = {
             firstName: 'BIKKI',
             lastName: 'GURUNG',
             description: 'Captivating audiences with soulful melodies and powerful vocals. Experience the magic of Nepali music through a voice that transcends boundaries.',
-            image: 'https://i.ytimg.com/vi/OQPVJJzY9T4/maxresdefault.jpg',
+            image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop',
             statSongs: '50+',
             statShows: '200+',
             statFans: '1M+',
@@ -17,7 +17,7 @@ const DB = {
             spotifyListeners: '100K+'
         },
         about: {
-            image: 'https://i.ytimg.com/vi/OQPVJJzY9T4/hqdefault.jpg',
+            image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&h=600&fit=crop',
             expYears: '10+',
             subtitle: 'A Voice That Echoes Through The Himalayas',
             text1: 'Bikki Gurung is a renowned Nepali singer and musician whose melodious voice has captured the hearts of millions across Nepal and beyond. Born with an innate passion for music, Bikki has dedicated his life to creating soulful compositions that blend traditional Nepali folk elements with contemporary musical styles.',

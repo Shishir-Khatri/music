@@ -7,11 +7,12 @@ import GallerySection from '../components/GallerySection';
 import ContactSection from '../components/ContactSection';
 import NewsletterSection from '../components/NewsletterSection';
 import Footer from '../components/Footer';
-import ThreeScene from '../components/ThreeScene';
 import CustomCursor from '../components/CustomCursor';
-import Preloader from '../components/Preloader';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { gsap } from 'gsap';
+
+// Lazy load Three.js scene — it's ~600KB and not needed for initial paint
+const ThreeScene = lazy(() => import('../components/ThreeScene'));
 
 export default function PublicPage() {
     useEffect(() => {
@@ -52,17 +53,20 @@ export default function PublicPage() {
 
     return (
         <>
-            <Preloader />
             <CustomCursor />
-            <ThreeScene />
+            <Suspense fallback={null}>
+                <ThreeScene />
+            </Suspense>
             <Navbar />
-            <HeroSection />
-            <AboutSection />
-            <MusicSection />
-            <EventsSection />
-            <GallerySection />
-            <ContactSection />
-            <NewsletterSection />
+            <main id="main-content">
+                <HeroSection />
+                <AboutSection />
+                <MusicSection />
+                <EventsSection />
+                <GallerySection />
+                <ContactSection />
+                <NewsletterSection />
+            </main>
             <Footer />
         </>
     );

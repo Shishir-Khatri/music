@@ -8,13 +8,13 @@ export default function EventsSection() {
         <section id="events" className="section events-section">
             <div className="section-container">
                 <div className="section-header" data-animate="fade-up">
-                    <span className="section-tag"><i className="fas fa-calendar-alt"></i> Events</span>
+                    <span className="section-tag"><i className="fas fa-calendar-alt" aria-hidden="true"></i> Events</span>
                     <h2 className="section-title">Upcoming <span className="gradient-text">Shows</span></h2>
                     <p className="section-desc">Catch Bikki Gurung live at these upcoming events</p>
                 </div>
                 <div className="events-list" id="eventsList">
                     {events.length === 0 ? (
-                        <div className="empty-state"><i className="fas fa-calendar"></i><p>No upcoming events</p></div>
+                        <div className="empty-state"><i className="fas fa-calendar" aria-hidden="true"></i><p>No upcoming events</p></div>
                     ) : (
                         events.map(event => {
                             const date = new Date(event.date);
@@ -42,10 +42,10 @@ export default function EventsSection() {
                                     <div className="event-details">
                                         <h3>{event.title}</h3>
                                         <div className="event-venue">
-                                            <i className="fas fa-map-marker-alt"></i> {event.venue}{event.location ? ', ' + event.location : ''}
+                                            <i className="fas fa-map-marker-alt" aria-hidden="true"></i> {event.venue}{event.location ? ', ' + event.location : ''}
                                         </div>
                                         <div className="event-time">
-                                            <i className="fas fa-clock"></i> {event.time || 'TBA'}
+                                            <i className="fas fa-clock" aria-hidden="true"></i> {event.time || 'TBA'}
                                         </div>
                                     </div>
                                     {statusHtml}

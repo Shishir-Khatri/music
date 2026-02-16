@@ -10,7 +10,7 @@ export default function HeroSection() {
             <div className="hero-container">
                 <div className="hero-content">
                     <div className="hero-badge glass-card-subtle" data-animate="fade-up">
-                        <i className="fas fa-music"></i>
+                        <i className="fas fa-music" aria-hidden="true"></i>
                         <span id="heroBadgeText">{hero.badgeText}</span>
                     </div>
                     <h1 className="hero-title" data-animate="fade-up" data-delay="0.2">
@@ -26,12 +26,12 @@ export default function HeroSection() {
                     </p>
                     <div className="hero-buttons" data-animate="fade-up" data-delay="0.6">
                         <a href="#music" className="btn btn-primary">
-                            <i className="fas fa-play"></i>
+                            <i className="fas fa-play" aria-hidden="true"></i>
                             <span>Listen Now</span>
                         </a>
                         <a href="#events" className="btn btn-outline">
                             <span>Upcoming Shows</span>
-                            <i className="fas fa-arrow-right"></i>
+                            <i className="fas fa-arrow-right" aria-hidden="true"></i>
                         </a>
                     </div>
                     <div className="hero-stats" data-animate="fade-up" data-delay="0.8">
@@ -57,20 +57,24 @@ export default function HeroSection() {
                         <img
                             id="heroImage"
                             src={hero.image}
-                            alt="Bikki Gurung"
+                            alt="Bikki Gurung - Nepali singer and musician"
+                            width="420"
+                            height="520"
+                            fetchpriority="high"
+                            decoding="async"
                             onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop'; }}
                         />
                         <div className="image-overlay"></div>
                     </div>
                     <div className="floating-card glass-card fc-1">
-                        <i className="fab fa-youtube"></i>
+                        <i className="fab fa-youtube" aria-hidden="true"></i>
                         <div>
                             <span className="fc-number" id="ytSubscribers">{hero.ytSubscribers}</span>
                             <span className="fc-label">Subscribers</span>
                         </div>
                     </div>
                     <div className="floating-card glass-card fc-2">
-                        <i className="fab fa-spotify"></i>
+                        <i className="fab fa-spotify" aria-hidden="true"></i>
                         <div>
                             <span className="fc-number" id="spotifyListeners">{hero.spotifyListeners}</span>
                             <span className="fc-label">Monthly Listeners</span>

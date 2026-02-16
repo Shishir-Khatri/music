@@ -7,7 +7,7 @@ export default function AboutSection() {
         <section id="about" className="section about-section">
             <div className="section-container">
                 <div className="section-header" data-animate="fade-up">
-                    <span className="section-tag"><i className="fas fa-user"></i> About</span>
+                    <span className="section-tag"><i className="fas fa-user" aria-hidden="true"></i> About</span>
                     <h2 className="section-title">The Story Behind <span className="gradient-text">The Voice</span></h2>
                 </div>
                 <div className="about-grid">
@@ -16,7 +16,11 @@ export default function AboutSection() {
                             <img
                                 id="aboutImage"
                                 src={about.image}
-                                alt="Bikki Gurung"
+                                alt="Bikki Gurung performing"
+                                width="500"
+                                height="600"
+                                loading="lazy"
+                                decoding="async"
                                 onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=500&h=600&fit=crop'; }}
                             />
                         </div>
@@ -31,25 +35,25 @@ export default function AboutSection() {
                         <p className="about-text" id="aboutText2">{about.text2}</p>
                         <div className="about-features">
                             <div className="feature-item glass-card-subtle">
-                                <i className="fas fa-microphone-alt"></i>
+                                <i className="fas fa-microphone-alt" aria-hidden="true"></i>
                                 <span id="feat1">{about.feat1}</span>
                             </div>
                             <div className="feature-item glass-card-subtle">
-                                <i className="fas fa-guitar"></i>
+                                <i className="fas fa-guitar" aria-hidden="true"></i>
                                 <span id="feat2">{about.feat2}</span>
                             </div>
                             <div className="feature-item glass-card-subtle">
-                                <i className="fas fa-pen-fancy"></i>
+                                <i className="fas fa-pen-fancy" aria-hidden="true"></i>
                                 <span id="feat3">{about.feat3}</span>
                             </div>
                             <div className="feature-item glass-card-subtle">
-                                <i className="fas fa-compact-disc"></i>
+                                <i className="fas fa-compact-disc" aria-hidden="true"></i>
                                 <span id="feat4">{about.feat4}</span>
                             </div>
                         </div>
                         <a href="#contact" className="btn btn-primary">
                             <span>Get In Touch</span>
-                            <i className="fas fa-arrow-right"></i>
+                            <i className="fas fa-arrow-right" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>

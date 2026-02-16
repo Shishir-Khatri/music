@@ -8,20 +8,23 @@ export default function ThreeScene() {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
+        const isMobile = window.innerWidth < 768;
+
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile, powerPreference: 'low-power' });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
 
         const mouse = { x: 0, y: 0 };
         const floatingMeshes = [];
         const clock = new THREE.Clock();
+        let isVisible = true;
 
         camera.position.z = 30;
 
-        // Create particles
-        const particleCount = 150;
+        // Create particles — fewer on mobile
+        const particleCount = isMobile ? 80 : 150;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
@@ -53,7 +56,7 @@ export default function ThreeScene() {
         const particleSystem = new THREE.Points(geometry, material);
         scene.add(particleSystem);
 
-        // Create floating geometry
+        // Create floating geometry — fewer on mobile
         const geometries = [
             new THREE.IcosahedronGeometry(1, 0),
             new THREE.OctahedronGeometry(0.8, 0),
@@ -69,7 +72,8 @@ export default function ThreeScene() {
             opacity: 0.08,
         });
 
-        for (let i = 0; i < 8; i++) {
+        const meshCount = isMobile ? 4 : 8;
+        for (let i = 0; i < meshCount; i++) {
             const geo = geometries[i % geometries.length];
             const mesh = new THREE.Mesh(geo, floatMaterial.clone());
             mesh.position.set(
@@ -91,6 +95,21 @@ export default function ThreeScene() {
             scene.add(mesh);
         }
 
+        // Pause rendering when canvas is not visible (saves GPU/CPU)
+        const visibilityObserver = new IntersectionObserver(
+            ([entry]) => { isVisible = entry.isIntersecting; },
+            { threshold: 0 }
+        );
+        visibilityObserver.observe(canvas);
+
+        // Pause on tab hidden
+        const onVisibilityChange = () => {
+            if (document.hidden) {
+                isVisible = false;
+            }
+        };
+        document.addEventListener('visibilitychange', onVisibilityChange);
+
         // Events
         const onResize = () => {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -105,10 +124,13 @@ export default function ThreeScene() {
         window.addEventListener('resize', onResize);
         window.addEventListener('mousemove', onMouseMove);
 
-        // Animation loop
+        // Animation loop — skips rendering when not visible
         let animationId;
         const animate = () => {
             animationId = requestAnimationFrame(animate);
+
+            if (!isVisible) return;
+
             const elapsed = clock.getElapsedTime();
 
             if (particleSystem) {
@@ -135,8 +157,13 @@ export default function ThreeScene() {
 
         return () => {
             cancelAnimationFrame(animationId);
+            visibilityObserver.disconnect();
+            document.removeEventListener('visibilitychange', onVisibilityChange);
             window.removeEventListener('resize', onResize);
             window.removeEventListener('mousemove', onMouseMove);
+            geometry.dispose();
+            material.dispose();
+            floatMaterial.dispose();
             renderer.dispose();
         };
     }, []);

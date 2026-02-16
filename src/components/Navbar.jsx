@@ -45,11 +45,11 @@ export default function Navbar() {
 
     return (
         <>
-            <nav id="navbar" className={scrolled ? 'scrolled' : ''}>
+            <nav id="navbar" className={scrolled ? 'scrolled' : ''} aria-label="Main navigation">
                 <div className="nav-container">
                     <a href="#" className="nav-logo">
-                        <span className="logo-text">B</span>
-                        <span className="logo-full">BIKKI</span>
+                        <span className="logo-text">BIKKI</span>
+                        <span className="logo-full">GURUNG</span>
                     </a>
                     <ul className="nav-links">
                         {navItems.map(item => (
@@ -65,7 +65,13 @@ export default function Navbar() {
                         ))}
                     </ul>
                     <div className="nav-actions">
-                        <button className={`hamburger${menuOpen ? ' active' : ''}`} id="hamburger" onClick={toggleMenu}>
+                        <button
+                            className={`hamburger${menuOpen ? ' active' : ''}`}
+                            id="hamburger"
+                            onClick={toggleMenu}
+                            aria-label="Toggle menu"
+                            aria-expanded={menuOpen}
+                        >
                             <span></span>
                             <span></span>
                             <span></span>
@@ -75,7 +81,7 @@ export default function Navbar() {
             </nav>
 
             {/* Mobile Menu */}
-            <div className={`mobile-menu${menuOpen ? ' active' : ''}`} id="mobileMenu">
+            <div className={`mobile-menu${menuOpen ? ' active' : ''}`} id="mobileMenu" aria-label="Mobile navigation">
                 <div className="mobile-menu-content">
                     <ul className="mobile-nav-links">
                         {navItems.map(item => (
@@ -87,10 +93,10 @@ export default function Navbar() {
                         ))}
                     </ul>
                     <div className="mobile-social">
-                        <a href="#" className="social-icon"><i className="fab fa-youtube"></i></a>
-                        <a href="#" className="social-icon"><i className="fab fa-instagram"></i></a>
-                        <a href="#" className="social-icon"><i className="fab fa-facebook"></i></a>
-                        <a href="#" className="social-icon"><i className="fab fa-tiktok"></i></a>
+                        <a href="#" className="social-icon" aria-label="YouTube"><i className="fab fa-youtube" aria-hidden="true"></i></a>
+                        <a href="#" className="social-icon" aria-label="Instagram"><i className="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#" className="social-icon" aria-label="Facebook"><i className="fab fa-facebook" aria-hidden="true"></i></a>
+                        <a href="#" className="social-icon" aria-label="TikTok"><i className="fab fa-tiktok" aria-hidden="true"></i></a>
                     </div>
                 </div>
             </div>

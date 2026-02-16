@@ -26,7 +26,8 @@ export default function NewsletterSection() {
                         <p>Subscribe to get the latest news about new releases and upcoming events</p>
                     </div>
                     <form className="newsletter-form" id="newsletterForm" onSubmit={handleSubmit}>
-                        <input type="email" placeholder="Enter your email" required />
+                        <label htmlFor="newsletter-email" className="sr-only">Email address</label>
+                        <input type="email" id="newsletter-email" placeholder="Enter your email" required />
                         <button type="submit" className="btn btn-primary">Subscribe</button>
                     </form>
                 </div>
