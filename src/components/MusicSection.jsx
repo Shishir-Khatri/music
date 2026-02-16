@@ -1,0 +1,49 @@
+import DB from '../utils/db';
+
+export default function MusicSection() {
+    const music = DB.getAll('music');
+
+    return (
+        <section id="music" className="section music-section">
+            <div className="section-container">
+                <div className="section-header" data-animate="fade-up">
+                    <span className="section-tag"><i className="fas fa-headphones"></i> Music</span>
+                    <h2 className="section-title">Latest <span className="gradient-text">Releases</span></h2>
+                    <p className="section-desc">Listen to the latest tracks and timeless classics</p>
+                </div>
+                <div className="music-grid" id="musicGrid">
+                    {music.length === 0 ? (
+                        <div className="empty-state"><i className="fas fa-music"></i><p>No songs yet</p></div>
+                    ) : (
+                        music.map(song => (
+                            <div
+                                key={song.id}
+                                className="music-card"
+                                data-animate="fade-up"
+                                onClick={() => window.open(song.link || '#', '_blank')}
+                            >
+                                <div className="music-cover">
+                                    <img
+                                        src={song.cover || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop'}
+                                        alt={song.title}
+                                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop'; }}
+                                    />
+                                    <div className="music-play-overlay">
+                                        <div className="play-btn-icon"><i className="fas fa-play"></i></div>
+                                    </div>
+                                </div>
+                                <div className="music-info">
+                                    <h3 className="music-title">{song.title}</h3>
+                                    <div className="music-meta">
+                                        <span>{song.album || 'Single'} • {song.year || ''}</span>
+                                        <span>{song.duration || ''}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </div>
+        </section>
+    );
+}
