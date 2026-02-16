@@ -7,14 +7,13 @@ export default function SmoothScroll({ children }) {
     useLayoutEffect(() => {
         const lenis = new Lenis({
             duration: 1.5,
-            lerp: 0.1, // Added for smoother transition
+            lerp: 0.1,
             orientation: 'vertical',
             gestureOrientation: 'vertical',
             smoothWheel: true,
             wheelMultiplier: 1,
             smoothTouch: true,
-            syncTouch: true, // Added for mobile sync
-            touchMultiplier: 2,
+            touchMultiplier: 0.8, // Heavy/Weighted feel for better control
             infinite: false,
         });
 
