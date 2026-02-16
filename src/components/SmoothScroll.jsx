@@ -6,14 +6,15 @@ export default function SmoothScroll({ children }) {
 
     useLayoutEffect(() => {
         const lenis = new Lenis({
-            duration: 2.2, // Ultra-smooth weighted feel
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            duration: 1.5,
+            lerp: 0.1, // Added for smoother transition
             orientation: 'vertical',
             gestureOrientation: 'vertical',
             smoothWheel: true,
-            wheelMultiplier: 0.9, // More weighted and controlled
-            smoothTouch: false,
-            touchMultiplier: 1.5,
+            wheelMultiplier: 1,
+            smoothTouch: true,
+            syncTouch: true, // Added for mobile sync
+            touchMultiplier: 2,
             infinite: false,
         });
 
