@@ -61,7 +61,7 @@ export default function HeroSection() {
                             height="520"
                             fetchpriority="high"
                             decoding="async"
-                            onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop'; }}
+                            onError={(e) => { e.target.src = 'https://scontent.fktm9-2.fna.fbcdn.net/v/t39.30808-1/612624817_1438810484278806_5885528685666392533_n.jpg?stp=cp6_dst-jpg_s480x480_tt6&_nc_cat=101&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=gJI4Y0BubRQQ7kNvwF0Q5Vn&_nc_oc=Adn2XnmLMaHpOIeNhJwYpUvdBhCP5HPz7aGe4un2pgZ3T7c7t8L2gZ5UKdwNMF5egRLK12tSABBC_gguusqZtfzw&_nc_zt=24&_nc_ht=scontent.fktm9-2.fna&_nc_gid=E8AtZQFDezznnop4oxXbQg&oh=00_AfulLm4IjcCsq2ifPvmLc3UjDeE841qf2RtVVUGUtv8VGQ&oe=699912D6'; }}
                         />
                         <div className="image-overlay"></div>
                     </div>

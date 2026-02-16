@@ -10,7 +10,7 @@ const DB = {
             firstName: 'BIKKI',
             lastName: 'GURUNG',
             description: 'Captivating audiences with soulful melodies and powerful vocals. Experience the magic of Nepali music through a voice that transcends boundaries.',
-            image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop',
+            image: 'https://scontent.fktm9-2.fna.fbcdn.net/v/t39.30808-1/612624817_1438810484278806_5885528685666392533_n.jpg?stp=cp6_dst-jpg_s480x480_tt6&_nc_cat=101&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=gJI4Y0BubRQQ7kNvwF0Q5Vn&_nc_oc=Adn2XnmLMaHpOIeNhJwYpUvdBhCP5HPz7aGe4un2pgZ3T7c7t8L2gZ5UKdwNMF5egRLK12tSABBC_gguusqZtfzw&_nc_zt=24&_nc_ht=scontent.fktm9-2.fna&_nc_gid=E8AtZQFDezznnop4oxXbQg&oh=00_AfulLm4IjcCsq2ifPvmLc3UjDeE841qf2RtVVUGUtv8VGQ&oe=699912D6',
             statSongs: '50+',
             statShows: '200+',
             statFans: '1M+',
@@ -18,7 +18,7 @@ const DB = {
             spotifyListeners: '100K+'
         },
         about: {
-            image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&h=600&fit=crop',
+            image: 'https://scontent.fktm9-2.fna.fbcdn.net/v/t39.30808-6/307058605_649943229832206_3095593770252687574_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=2TbG7Ji-UBcQ7kNvwFin3wb&_nc_oc=Adkv-A_Mo_KUC-6vWDj5zYKOCtrJ-8iOuBTA4MSVxTQXNg1FVBDghKIecdxGq8wPKqnZbaOMmL6JdrZQgqVNlTam&_nc_zt=23&_nc_ht=scontent.fktm9-2.fna&_nc_gid=eETtwDu0FmjiYja8Aq4sUQ&oh=00_Aftug40qVQmBPjjDsJMQwMA75B2eHLoVS4-tLb_SkSf6Jw&oe=69991A6C',
             expYears: '10+',
             subtitle: 'A Voice That Echoes Through The Himalayas',
             text1: 'Bikki Gurung is a renowned Nepali singer and musician whose melodious voice has captured the hearts of millions across Nepal and beyond. Born with an innate passion for music, Bikki has dedicated his life to creating soulful compositions that blend traditional Nepali folk elements with contemporary musical styles.',

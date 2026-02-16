@@ -21,7 +21,7 @@ export default function AboutSection() {
                                 height="600"
                                 loading="lazy"
                                 decoding="async"
-                                onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=500&h=600&fit=crop'; }}
+                                onError={(e) => { e.target.src = 'https://scontent.fktm9-2.fna.fbcdn.net/v/t39.30808-6/307058605_649943229832206_3095593770252687574_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=2TbG7Ji-UBcQ7kNvwFin3wb&_nc_oc=Adkv-A_Mo_KUC-6vWDj5zYKOCtrJ-8iOuBTA4MSVxTQXNg1FVBDghKIecdxGq8wPKqnZbaOMmL6JdrZQgqVNlTam&_nc_zt=23&_nc_ht=scontent.fktm9-2.fna&_nc_gid=eETtwDu0FmjiYja8Aq4sUQ&oh=00_Aftug40qVQmBPjjDsJMQwMA75B2eHLoVS4-tLb_SkSf6Jw&oe=69991A6C'; }}
                             />
                         </div>
                         <div className="experience-badge glass-card">
