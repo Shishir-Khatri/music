@@ -7,9 +7,9 @@ export default function AdminLogin({ onLogin }) {
     const [password, setPassword] = useState('');
     const showToast = useToast();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const settings = DB.get('settings');
+        const settings = await DB.get('settings');
         if (username === settings.username && password === settings.password) {
             sessionStorage.setItem('bg_admin_auth', 'true');
             onLogin();

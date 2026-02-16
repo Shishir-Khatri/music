@@ -4,14 +4,14 @@ import { useToast } from './Toast';
 export default function NewsletterSection() {
     const showToast = useToast();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const email = e.target.querySelector('input[type="email"]').value;
-        const subscribers = DB.getAll('subscribers');
+        const subscribers = await DB.getAll('subscribers');
         if (subscribers.find(s => s.email === email)) {
             showToast('You are already subscribed!', 'info');
         } else {
-            DB.add('subscribers', { email, date: new Date().toISOString() });
+            await DB.add('subscribers', { email });
             showToast('Subscribed successfully!', 'success');
         }
         e.target.reset();

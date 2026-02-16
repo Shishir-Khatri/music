@@ -1,22 +1,21 @@
-import { useState } from 'react';
-import DB from '../utils/db';
+import { useDB } from '../hooks/useDB';
 import { useToast } from './Toast';
+import DB from '../utils/db';
 
 export default function ContactSection() {
-    const contact = DB.get('contact');
+    const [contact] = useDB('contact');
     const showToast = useToast();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const message = {
             name: formData.get('name'),
             email: formData.get('email'),
             subject: formData.get('subject'),
-            message: formData.get('message'),
-            date: new Date().toISOString()
+            message: formData.get('message')
         };
-        DB.add('messages', message);
+        await DB.add('messages', message);
         showToast('Message sent successfully!', 'success');
         e.target.reset();
     };

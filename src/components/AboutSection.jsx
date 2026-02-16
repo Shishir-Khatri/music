@@ -1,7 +1,7 @@
-import DB from '../utils/db';
+import { useDB } from '../hooks/useDB';
 
 export default function AboutSection() {
-    const about = DB.get('about');
+    const [about] = useDB('about');
 
     return (
         <section id="about" className="section about-section">

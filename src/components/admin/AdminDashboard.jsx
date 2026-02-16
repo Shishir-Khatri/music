@@ -15,16 +15,45 @@ export default function AdminDashboard({ onLogout }) {
     const [eventModal, setEventModal] = useState(false);
     const [galleryModal, setGalleryModal] = useState(false);
 
+    // List states
+    const [music, setMusic] = useState([]);
+    const [events, setEvents] = useState([]);
+    const [gallery, setGallery] = useState([]);
+    const [messages, setMessages] = useState([]);
+
     // Form states
-    const [heroForm, setHeroForm] = useState(DB.get('hero'));
-    const [aboutForm, setAboutForm] = useState(DB.get('about'));
-    const [contactForm, setContactForm] = useState(DB.get('contact'));
-    const [settingsForm, setSettingsForm] = useState({ ...DB.get('settings'), newPassword: '' });
+    const [heroForm, setHeroForm] = useState(DB.defaults.hero);
+    const [aboutForm, setAboutForm] = useState(DB.defaults.about);
+    const [contactForm, setContactForm] = useState(DB.defaults.contact);
+    const [settingsForm, setSettingsForm] = useState({ ...DB.defaults.settings, newPassword: '' });
+
+    // Loading state
+    const [loading, setLoading] = useState(true);
 
     // Edit item states
     const [editMusic, setEditMusic] = useState(null);
     const [editEvent, setEditEvent] = useState(null);
     const [editGallery, setEditGallery] = useState(null);
+
+    useEffect(() => {
+        const loadAllData = async () => {
+            setLoading(true);
+            const [h, a, c, s, m, e, g, msg] = await Promise.all([
+                DB.get('hero'), DB.get('about'), DB.get('contact'), DB.get('settings'),
+                DB.getAll('music'), DB.getAll('events'), DB.getAll('gallery'), DB.getAll('messages')
+            ]);
+            setHeroForm(h);
+            setAboutForm(a);
+            setContactForm(c);
+            setSettingsForm({ ...s, newPassword: '' });
+            setMusic(m);
+            setEvents(e);
+            setGallery(g);
+            setMessages(msg);
+            setLoading(false);
+        };
+        loadAllData();
+    }, [refreshKey]);
 
     const refresh = () => setRefreshKey(k => k + 1);
 
@@ -52,129 +81,128 @@ export default function AdminDashboard({ onLogout }) {
     };
 
     // ===== HERO =====
-    const saveHero = (e) => {
+    const saveHero = async (e) => {
         e.preventDefault();
-        DB.set('hero', heroForm);
+        await DB.set('hero', heroForm);
         showToast('Hero section saved!', 'success');
     };
 
     // ===== ABOUT =====
-    const saveAbout = (e) => {
+    const saveAbout = async (e) => {
         e.preventDefault();
-        DB.set('about', aboutForm);
+        await DB.set('about', aboutForm);
         showToast('About section saved!', 'success');
     };
 
     // ===== MUSIC =====
-    const music = DB.getAll('music');
+    // ===== MUSIC =====
     const openAddMusic = () => {
         setEditMusic({ title: '', album: '', year: '', cover: '', link: '', duration: '' });
         setMusicModal(true);
     };
-    const openEditMusic = (id) => {
-        const song = DB.getById('music', id);
+    const openEditMusic = async (id) => {
+        const song = await DB.getById('music', id);
         if (song) { setEditMusic({ ...song }); setMusicModal(true); }
     };
-    const saveMusic = (e) => {
+    const saveMusic = async (e) => {
         e.preventDefault();
         if (editMusic.id) {
-            DB.update('music', editMusic.id, editMusic);
+            await DB.update('music', editMusic.id, editMusic);
             showToast('Song updated!', 'success');
         } else {
-            DB.add('music', { ...editMusic });
+            await DB.add('music', { ...editMusic });
             showToast('Song added!', 'success');
         }
         setMusicModal(false);
         refresh();
     };
-    const deleteMusic = (id) => {
+    const deleteMusic = async (id) => {
         if (confirm('Delete this song?')) {
-            DB.delete('music', id);
+            await DB.delete('music', id);
             showToast('Song deleted!', 'success');
             refresh();
         }
     };
 
     // ===== EVENTS =====
-    const events = DB.getAll('events');
+    // ===== EVENTS =====
     const openAddEvent = () => {
         setEditEvent({ title: '', date: '', time: '', venue: '', location: '', description: '', ticketLink: '', image: '', status: 'upcoming' });
         setEventModal(true);
     };
-    const openEditEvent = (id) => {
-        const event = DB.getById('events', id);
+    const openEditEvent = async (id) => {
+        const event = await DB.getById('events', id);
         if (event) { setEditEvent({ ...event }); setEventModal(true); }
     };
-    const saveEvent = (e) => {
+    const saveEvent = async (e) => {
         e.preventDefault();
         if (editEvent.id) {
-            DB.update('events', editEvent.id, editEvent);
+            await DB.update('events', editEvent.id, editEvent);
             showToast('Event updated!', 'success');
         } else {
-            DB.add('events', { ...editEvent });
+            await DB.add('events', { ...editEvent });
             showToast('Event added!', 'success');
         }
         setEventModal(false);
         refresh();
     };
-    const deleteEvent = (id) => {
+    const deleteEvent = async (id) => {
         if (confirm('Delete this event?')) {
-            DB.delete('events', id);
+            await DB.delete('events', id);
             showToast('Event deleted!', 'success');
             refresh();
         }
     };
 
     // ===== GALLERY =====
-    const gallery = DB.getAll('gallery');
+    // ===== GALLERY =====
     const openAddGallery = () => {
         setEditGallery({ image: '', caption: '', category: 'performance' });
         setGalleryModal(true);
     };
-    const openEditGallery = (id) => {
-        const photo = DB.getById('gallery', id);
+    const openEditGallery = async (id) => {
+        const photo = await DB.getById('gallery', id);
         if (photo) { setEditGallery({ ...photo }); setGalleryModal(true); }
     };
-    const saveGallery = (e) => {
+    const saveGallery = async (e) => {
         e.preventDefault();
         if (editGallery.id) {
-            DB.update('gallery', editGallery.id, editGallery);
+            await DB.update('gallery', editGallery.id, editGallery);
             showToast('Photo updated!', 'success');
         } else {
-            DB.add('gallery', { ...editGallery });
+            await DB.add('gallery', { ...editGallery });
             showToast('Photo added!', 'success');
         }
         setGalleryModal(false);
         refresh();
     };
-    const deleteGallery = (id) => {
+    const deleteGallery = async (id) => {
         if (confirm('Delete this photo?')) {
-            DB.delete('gallery', id);
+            await DB.delete('gallery', id);
             showToast('Photo deleted!', 'success');
             refresh();
         }
     };
 
     // ===== CONTACT =====
-    const saveContact = (e) => {
+    const saveContact = async (e) => {
         e.preventDefault();
-        DB.set('contact', contactForm);
+        await DB.set('contact', contactForm);
         showToast('Contact info saved!', 'success');
     };
 
     // ===== MESSAGES =====
-    const messages = DB.getAll('messages').sort((a, b) => new Date(b.date) - new Date(a.date));
-    const deleteMessage = (id) => {
-        DB.delete('messages', id);
+    const deleteMessage = async (id) => {
+        await DB.delete('messages', id);
         showToast('Message deleted!', 'success');
         refresh();
     };
 
     // ===== SETTINGS =====
-    const saveSettings = (e) => {
+    const saveSettings = async (e) => {
         e.preventDefault();
-        const current = DB.get('settings');
-        DB.set('settings', {
+        const current = await DB.get('settings');
+        await DB.set('settings', {
             username: settingsForm.username || current.username,
             password: settingsForm.newPassword || current.password,
             footerDesc: settingsForm.footerDesc || current.footerDesc
@@ -183,9 +211,33 @@ export default function AdminDashboard({ onLogout }) {
         showToast('Settings saved!', 'success');
     };
 
+    // Reset
+    const resetData = async () => {
+        if (confirm('Are you sure you want to reset ALL data to defaults? This cannot be undone.')) {
+            await DB.resetAll();
+            showToast('All data reset to defaults!', 'success');
+            refresh();
+        }
+    };
+
+    // Migration
+    const handleMigration = async () => {
+        if (confirm('Found local changes on this device. Would you like to migrate them to the shared database? This will overwrite existing online data.')) {
+            setLoading(true);
+            const success = await DB.migrateFromLocalStorage();
+            if (success) {
+                showToast('Migration successful!', 'success');
+                refresh();
+            } else {
+                showToast('Nothing to migrate.', 'info');
+                setLoading(false);
+            }
+        }
+    };
+
     // Export
-    const exportData = () => {
-        const data = DB.exportAll();
+    const exportData = async () => {
+        const data = await DB.exportAll();
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -196,8 +248,8 @@ export default function AdminDashboard({ onLogout }) {
     };
 
     // Clipboard Copy
-    const copyToClipboard = () => {
-        const data = DB.exportAll();
+    const copyToClipboard = async () => {
+        const data = await DB.exportAll();
         navigator.clipboard.writeText(JSON.stringify(data, null, 2))
             .then(() => showToast('Data copied to clipboard!', 'success'))
             .catch(() => showToast('Failed to copy data', 'error'));
@@ -208,15 +260,11 @@ export default function AdminDashboard({ onLogout }) {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = (ev) => {
+        reader.onload = async (ev) => {
             try {
                 const data = JSON.parse(ev.target.result);
-                DB.importAll(data);
+                await DB.importAll(data);
                 showToast('Data imported successfully!', 'success');
-                setHeroForm(DB.get('hero'));
-                setAboutForm(DB.get('about'));
-                setContactForm(DB.get('contact'));
-                setSettingsForm({ ...DB.get('settings'), newPassword: '' });
                 refresh();
             } catch {
                 showToast('Invalid JSON file!', 'error');
@@ -234,37 +282,29 @@ export default function AdminDashboard({ onLogout }) {
                 return;
             }
             const data = JSON.parse(text);
-            DB.importAll(data);
+            await DB.importAll(data);
             showToast('Data imported from clipboard!', 'success');
-            setHeroForm(DB.get('hero'));
-            setAboutForm(DB.get('about'));
-            setContactForm(DB.get('contact'));
-            setSettingsForm({ ...DB.get('settings'), newPassword: '' });
             refresh();
         } catch (err) {
             showToast('Invalid data in clipboard!', 'error');
         }
     };
 
-    // Reset
-    const resetData = () => {
-
-        if (confirm('Are you sure you want to reset ALL data to defaults? This cannot be undone.')) {
-            DB.resetAll();
-            showToast('All data reset to defaults!', 'success');
-            setHeroForm(DB.get('hero'));
-            setAboutForm(DB.get('about'));
-            setContactForm(DB.get('contact'));
-            setSettingsForm({ ...DB.get('settings'), newPassword: '' });
-            refresh();
-        }
-    };
 
     const handleLogout = (e) => {
         e.preventDefault();
         sessionStorage.removeItem('bg_admin_auth');
         onLogout();
     };
+
+    if (loading) {
+        return (
+            <div className="admin-loading">
+                <div className="loader"></div>
+                <p>Loading Dashboard...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="admin-dashboard" id="adminDashboard" style={{ display: 'flex' }}>
@@ -336,35 +376,6 @@ export default function AdminDashboard({ onLogout }) {
                                 <p>Manage all content of your website from here. Use the sidebar to navigate between different sections.</p>
                             </div>
 
-                            <div className="dash-data-management glass-card" style={{ marginTop: '20px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                                    <h3><i className="fas fa-database"></i> Data Management</h3>
-                                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Move your changes between Local and Live sites</span>
-                                </div>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
-                                    <button className="btn btn-outline" onClick={copyToClipboard} style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '15px', height: 'auto' }}>
-                                        <i className="fas fa-copy" style={{ fontSize: '1.2rem' }}></i>
-                                        <strong>Copy Data</strong>
-                                        <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Copy all content to clipboard</span>
-                                    </button>
-                                    <button className="btn btn-outline" onClick={pasteFromClipboard} style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '15px', height: 'auto' }}>
-                                        <i className="fas fa-paste" style={{ fontSize: '1.2rem' }}></i>
-                                        <strong>Paste Data</strong>
-                                        <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Import content from clipboard</span>
-                                    </button>
-                                    <button className="btn btn-outline" onClick={exportData} style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '15px', height: 'auto' }}>
-                                        <i className="fas fa-download" style={{ fontSize: '1.2rem' }}></i>
-                                        <strong>Download JSON</strong>
-                                        <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Save data to a .json file</span>
-                                    </button>
-                                    <label className="btn btn-outline" style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '15px', height: 'auto', textAlign: 'center', cursor: 'pointer' }}>
-                                        <i className="fas fa-upload" style={{ fontSize: '1.2rem' }}></i>
-                                        <strong>Upload JSON</strong>
-                                        <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Restore from a .json file</span>
-                                        <input type="file" accept=".json" onChange={importData} style={{ display: 'none' }} />
-                                    </label>
-                                </div>
-                            </div>
                         </div>
                     )}
 
@@ -666,8 +677,11 @@ export default function AdminDashboard({ onLogout }) {
                             </form>
                             <div className="admin-form glass-card" style={{ marginTop: '20px' }}>
                                 <h3><i className="fas fa-database"></i> Data Management</h3>
-                                <p style={{ color: 'var(--text-secondary)', marginBottom: '15px' }}>Export or import your website data</p>
+                                <p style={{ color: 'var(--text-secondary)', marginBottom: '15px' }}>Export, import, or migrate your website data</p>
                                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                                    <button className="btn btn-outline" onClick={handleMigration} style={{ border: '1px dashed var(--primary)' }}>
+                                        <i className="fas fa-arrow-up"></i> Migrate Local Data
+                                    </button>
                                     <button className="btn btn-outline" onClick={copyToClipboard}><i className="fas fa-copy"></i> Copy Data</button>
                                     <button className="btn btn-outline" onClick={pasteFromClipboard}><i className="fas fa-paste"></i> Paste Data</button>
                                     <button className="btn btn-outline" onClick={exportData}><i className="fas fa-download"></i> Export Data</button>
@@ -676,13 +690,12 @@ export default function AdminDashboard({ onLogout }) {
                                         <input type="file" accept=".json" onChange={importData} style={{ display: 'none' }} />
                                     </label>
                                     <button className="btn btn-danger" onClick={resetData}><i className="fas fa-trash"></i> Reset All Data</button>
-
                                 </div>
                             </div>
                         </div>
                     )}
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 }

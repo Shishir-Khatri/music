@@ -1,6 +1,7 @@
 // ============================================
-// DATABASE LAYER - LocalStorage Based CMS
+// DATABASE LAYER - Supabase Shared Database
 // ============================================
+import { supabase } from './supabaseClient';
 
 const DB = {
     defaults: {
@@ -41,108 +42,128 @@ const DB = {
             username: 'admin',
             password: 'admin123',
             footerDesc: 'Nepali singer, musician, and songwriter creating soulful melodies that resonate with hearts worldwide.'
-        },
-        music: [
-            { id: '1', title: 'Timro Lagi', album: 'Aasha', year: '2024', cover: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop', link: 'https://youtube.com', duration: '4:32' },
-            { id: '2', title: 'Maya Lagcha', album: 'Prem Kahani', year: '2023', cover: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400&h=400&fit=crop', link: 'https://youtube.com', duration: '3:58' },
-            { id: '3', title: 'Sapana Mero', album: 'Single', year: '2023', cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=400&fit=crop', link: 'https://youtube.com', duration: '5:12' },
-            { id: '4', title: 'Himalko Chiso', album: 'Pahad', year: '2024', cover: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=400&fit=crop', link: 'https://youtube.com', duration: '4:05' },
-            { id: '5', title: 'Dherai Maya', album: 'Single', year: '2024', cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=400&fit=crop', link: 'https://youtube.com', duration: '3:45' },
-            { id: '6', title: 'Samjhana', album: 'Memories', year: '2022', cover: 'https://images.unsplash.com/photo-1504898770365-14faca6a7320?w=400&h=400&fit=crop', link: 'https://youtube.com', duration: '4:18' }
-        ],
-        events: [
-            { id: '1', title: 'Kathmandu Night Live', date: '2025-02-14', time: '7:00 PM', venue: 'Hyatt Regency', location: 'Kathmandu, Nepal', description: "An unforgettable Valentine's night with Bikki Gurung live.", ticketLink: 'https://tickets.example.com', image: '', status: 'upcoming' },
-            { id: '2', title: 'Pokhara Music Festival', date: '2025-03-15', time: '5:00 PM', venue: 'Lakeside Stage', location: 'Pokhara, Nepal', description: 'Three-day music festival featuring top Nepali artists.', ticketLink: 'https://tickets.example.com', image: '', status: 'upcoming' },
-            { id: '3', title: 'Nepali New Year Concert', date: '2025-04-14', time: '6:00 PM', venue: 'Dasarath Stadium', location: 'Kathmandu, Nepal', description: 'Celebrate Nepali New Year with a grand musical evening.', ticketLink: '', image: '', status: 'upcoming' },
-            { id: '4', title: 'Sydney Nepali Night', date: '2025-05-20', time: '7:30 PM', venue: 'Sydney Opera House', location: 'Sydney, Australia', description: 'Bikki Gurung goes international — live in Sydney!', ticketLink: 'https://tickets.example.com', image: '', status: 'upcoming' }
-        ],
-        gallery: [
-            { id: '1', image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&h=400&fit=crop', caption: 'Live at Kathmandu Festival', category: 'performance' },
-            { id: '2', image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&h=400&fit=crop', caption: 'Recording Session', category: 'studio' },
-            { id: '3', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop', caption: 'Concert Night', category: 'performance' },
-            { id: '4', image: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop', caption: 'Behind The Scenes', category: 'backstage' },
-            { id: '5', image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=400&fit=crop', caption: 'Stage Performance', category: 'performance' },
-            { id: '6', image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&h=400&fit=crop', caption: 'DJ Night Collab', category: 'performance' },
-            { id: '7', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&h=400&fit=crop', caption: 'Music Studio', category: 'studio' },
-            { id: '8', image: 'https://images.unsplash.com/photo-1504898770365-14faca6a7320?w=600&h=400&fit=crop', caption: 'Mountain Retreat', category: 'personal' }
-        ],
-        messages: [],
-        subscribers: []
-    },
-
-    init() {
-        const keys = ['hero', 'about', 'contact', 'settings', 'music', 'events', 'gallery', 'messages', 'subscribers'];
-        keys.forEach(key => {
-            if (!localStorage.getItem(`bg_${key}`)) {
-                localStorage.setItem(`bg_${key}`, JSON.stringify(this.defaults[key]));
-            }
-        });
-    },
-
-    get(key) {
-        const data = localStorage.getItem(`bg_${key}`);
-        return data ? JSON.parse(data) : this.defaults[key];
-    },
-
-    set(key, value) {
-        localStorage.setItem(`bg_${key}`, JSON.stringify(value));
-    },
-
-    getAll(key) {
-        return this.get(key) || [];
-    },
-
-    getById(key, id) {
-        const items = this.getAll(key);
-        return items.find(item => item.id === id);
-    },
-
-    add(key, item) {
-        const items = this.getAll(key);
-        item.id = Date.now().toString();
-        items.push(item);
-        this.set(key, items);
-        return item;
-    },
-
-    update(key, id, updatedItem) {
-        const items = this.getAll(key);
-        const index = items.findIndex(item => item.id === id);
-        if (index !== -1) {
-            items[index] = { ...items[index], ...updatedItem };
-            this.set(key, items);
-            return items[index];
         }
-        return null;
     },
 
-    delete(key, id) {
-        let items = this.getAll(key);
-        items = items.filter(item => item.id !== id);
-        this.set(key, items);
+    // Check if we have a table for the key or if it's in site_content
+    isCollection(key) {
+        return ['music', 'events', 'gallery', 'messages', 'subscribers'].includes(key);
     },
 
-    exportAll() {
-        const data = {};
-        const keys = ['hero', 'about', 'contact', 'settings', 'music', 'events', 'gallery', 'messages', 'subscribers'];
-        keys.forEach(key => { data[key] = this.get(key); });
+    async get(key) {
+        if (!supabase) return this.defaults[key];
+
+        if (this.isCollection(key)) {
+            const { data, error } = await supabase.from(key).select('*').order('created_at', { ascending: false });
+            if (error) { console.error(`Error fetching ${key}:`, error); return []; }
+            return data;
+        } else {
+            const { data, error } = await supabase.from('site_content').select('data').eq('key', key).maybeSingle();
+            if (error) { console.error(`Error fetching ${key}:`, error); return this.defaults[key]; }
+            return data ? data.data : this.defaults[key];
+        }
+    },
+
+    async getAll(key) {
+        return await this.get(key);
+    },
+
+    async getById(key, id) {
+        if (!supabase) return null;
+        const { data, error } = await supabase.from(key).select('*').eq('id', id).single();
+        if (error) { console.error(`Error fetching ${key} by id:`, error); return null; }
         return data;
     },
 
-    importAll(data) {
-        Object.keys(data).forEach(key => {
-            this.set(key, data[key]);
-        });
+    async set(key, value) {
+        if (!supabase) return;
+        if (this.isCollection(key)) {
+            // Usually we add/update/delete items individually for collections, 
+            // but if we must set the whole array:
+            console.warn('Set called on a collection. Use add/update/delete instead.');
+        } else {
+            const { error } = await supabase.from('site_content').upsert({ key, data: value, updated_at: new Date() });
+            if (error) console.error(`Error setting ${key}:`, error);
+        }
     },
 
-    resetAll() {
+    async add(key, item) {
+        if (!supabase) return null;
+        const { data, error } = await supabase.from(key).insert([item]).select();
+        if (error) { console.error(`Error adding to ${key}:`, error); return null; }
+        return data[0];
+    },
+
+    async update(key, id, updatedItem) {
+        if (!supabase) return null;
+        const { data, error } = await supabase.from(key).update(updatedItem).eq('id', id).select();
+        if (error) { console.error(`Error updating ${key}:`, error); return null; }
+        return data[0];
+    },
+
+    async delete(key, id) {
+        if (!supabase) return;
+        const { error } = await supabase.from(key).delete().eq('id', id);
+        if (error) console.error(`Error deleting from ${key}:`, error);
+    },
+
+    async resetAll() {
+        if (!supabase) return;
+        for (const [key, value] of Object.entries(this.defaults)) {
+            await this.set(key, value);
+        }
+    },
+
+    async exportAll() {
+        if (!supabase) return {};
         const keys = ['hero', 'about', 'contact', 'settings', 'music', 'events', 'gallery', 'messages', 'subscribers'];
-        keys.forEach(key => {
-            localStorage.setItem(`bg_${key}`, JSON.stringify(this.defaults[key]));
+        const results = await Promise.all(keys.map(k => this.get(k)));
+        return keys.reduce((acc, key, i) => {
+            acc[key] = results[i];
+            return acc;
+        }, {});
+    },
+
+    async importAll(data) {
+        if (!supabase) return;
+        for (const [key, value] of Object.entries(data)) {
+            if (this.isCollection(key)) {
+                // For collections, we clear and then insert
+                await supabase.from(key).delete().neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
+                if (Array.isArray(value) && value.length > 0) {
+                    // Remove IDs from items to allow Supabase to generate new ones, or keep if wanting to preserve
+                    const itemsToInsert = value.map(({ id, created_at, updated_at, ...rest }) => rest);
+                    await supabase.from(key).insert(itemsToInsert);
+                }
+            } else {
+                await this.set(key, value);
+            }
+        }
+    },
+
+    async migrateFromLocalStorage() {
+        const legacyData = {};
+        const keys = ['bg_hero', 'bg_about', 'bg_contact', 'bg_settings', 'bg_music', 'bg_events', 'bg_gallery', 'bg_messages', 'bg_subscribers'];
+
+        let hasData = false;
+        keys.forEach(k => {
+            const val = localStorage.getItem(k);
+            if (val) {
+                const standardKey = k.replace('bg_', '');
+                legacyData[standardKey] = JSON.parse(val);
+                hasData = true;
+            }
         });
+
+        if (hasData) {
+            console.log('Detected legacy localStorage data. Migrating to Supabase...');
+            await this.importAll(legacyData);
+            // Optionally clear localStorage after migration
+            // keys.forEach(k => localStorage.removeItem(k));
+            return true;
+        }
+        return false;
     }
 };
-
-DB.init();
 
 export default DB;

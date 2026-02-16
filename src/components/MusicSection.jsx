@@ -1,7 +1,7 @@
-import DB from '../utils/db';
+import { useDB } from '../hooks/useDB';
 
 export default function MusicSection() {
-    const music = DB.getAll('music');
+    const [music] = useDB('music');
 
     return (
         <section id="music" className="section music-section">

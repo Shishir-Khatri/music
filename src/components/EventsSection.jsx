@@ -1,8 +1,8 @@
-import DB from '../utils/db';
+import { useDB } from '../hooks/useDB';
 
 export default function EventsSection() {
-    const events = DB.getAll('events');
-    events.sort((a, b) => new Date(a.date) - new Date(b.date));
+    const [events] = useDB('events', []);
+    const sortedEvents = [...events].sort((a, b) => new Date(a.date) - new Date(b.date));
 
     return (
         <section id="events" className="section events-section">
@@ -13,10 +13,10 @@ export default function EventsSection() {
                     <p className="section-desc">Catch Bikki Gurung live at these upcoming events</p>
                 </div>
                 <div className="events-list" id="eventsList">
-                    {events.length === 0 ? (
+                    {sortedEvents.length === 0 ? (
                         <div className="empty-state"><i className="fas fa-calendar" aria-hidden="true"></i><p>No upcoming events</p></div>
                     ) : (
-                        events.map(event => {
+                        sortedEvents.map(event => {
                             const date = new Date(event.date);
                             const day = date.getDate();
                             const month = date.toLocaleString('default', { month: 'short' });

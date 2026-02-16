@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import DB from '../utils/db';
+import { useDB } from '../hooks/useDB';
 
 export default function GallerySection() {
-    const gallery = DB.getAll('gallery');
+    const [gallery] = useDB('gallery');
     const [lightboxActive, setLightboxActive] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
 

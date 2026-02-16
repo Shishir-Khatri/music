@@ -1,8 +1,8 @@
-import DB from '../utils/db';
+import { useDB } from '../hooks/useDB';
 
 export default function Footer() {
-    const contact = DB.get('contact');
-    const settings = DB.get('settings');
+    const [contact] = useDB('contact');
+    const [settings] = useDB('settings');
 
     return (
         <footer className="footer">

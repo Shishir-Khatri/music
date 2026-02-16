@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
-import DB from '../utils/db';
+import { useDB } from '../hooks/useDB';
 
 export default function HeroSection() {
-    const hero = DB.get('hero');
+    const [hero] = useDB('hero');
 
     return (
         <section id="home" className="hero-section">
