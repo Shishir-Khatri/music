@@ -14,6 +14,8 @@ import { gsap } from 'gsap';
 // Lazy load Three.js scene — it's ~600KB and not needed for initial paint
 const ThreeScene = lazy(() => import('../components/ThreeScene'));
 
+import SmoothScroll from '../components/SmoothScroll';
+
 export default function PublicPage() {
     useEffect(() => {
         // Scroll animations for [data-animate] elements
@@ -77,7 +79,7 @@ export default function PublicPage() {
     }, []);
 
     return (
-        <>
+        <SmoothScroll>
             <CustomCursor />
             <Suspense fallback={null}>
                 <ThreeScene />
@@ -93,6 +95,6 @@ export default function PublicPage() {
                 <NewsletterSection />
             </main>
             <Footer />
-        </>
+        </SmoothScroll>
     );
 }

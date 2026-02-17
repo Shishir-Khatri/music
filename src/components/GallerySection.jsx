@@ -47,6 +47,7 @@ export default function GallerySection() {
                                     key={photo.id}
                                     className="gallery-item"
                                     data-index={index}
+                                    data-animate="fade-up"
                                     role="button"
                                     tabIndex={0}
                                     aria-label={`View ${photo.caption || 'photo'}`}
