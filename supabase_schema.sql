@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS events (
   venue TEXT NOT NULL,
   location TEXT,
   description TEXT,
-  ticketLink TEXT,
+  ticket_link TEXT,
   image TEXT,
   status TEXT DEFAULT 'upcoming',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL

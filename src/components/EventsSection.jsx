@@ -43,8 +43,8 @@ export default function EventsSection() {
                                         </div>
                                     </div>
                                     {event.status === 'upcoming' ? (
-                                        event.ticketLink ? (
-                                            <a href={event.ticketLink} target="_blank" rel="noopener noreferrer" className="event-status upcoming">Get Tickets</a>
+                                        event.ticket_link ? (
+                                            <a href={event.ticket_link} target="_blank" rel="noopener noreferrer" className="event-status upcoming">Get Tickets</a>
                                         ) : (
                                             <span className="event-status upcoming">Upcoming</span>
                                         )

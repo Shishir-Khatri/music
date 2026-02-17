@@ -106,15 +106,28 @@ export default function AdminDashboard({ onLogout }) {
     };
     const saveMusic = async (e) => {
         e.preventDefault();
-        if (editMusic.id) {
-            await DB.update('music', editMusic.id, editMusic);
-            showToast('Song updated!', 'success');
+        const item = { ...editMusic };
+        // Clean up optional fields: convert empty strings to null for DB compatibility
+        if (!item.album) item.album = null;
+        if (!item.year) item.year = null;
+        if (!item.cover) item.cover = null;
+        if (!item.link) item.link = null;
+        if (!item.duration) item.duration = null;
+
+        let result;
+        if (item.id) {
+            result = await DB.update('music', item.id, item);
         } else {
-            await DB.add('music', { ...editMusic });
-            showToast('Song added!', 'success');
+            result = await DB.add('music', item);
         }
-        setMusicModal(false);
-        refresh();
+
+        if (result) {
+            showToast(item.id ? 'Song updated!' : 'Song added!', 'success');
+            setMusicModal(false);
+            refresh();
+        } else {
+            showToast('Error saving song. Check console.', 'error');
+        }
     };
     const deleteMusic = async (id) => {
         if (confirm('Delete this song?')) {
@@ -125,9 +138,8 @@ export default function AdminDashboard({ onLogout }) {
     };
 
     // ===== EVENTS =====
-    // ===== EVENTS =====
     const openAddEvent = () => {
-        setEditEvent({ title: '', date: '', time: '', venue: '', location: '', description: '', ticketLink: '', image: '', status: 'upcoming' });
+        setEditEvent({ title: '', date: '', time: '', venue: '', location: '', description: '', ticket_link: '', image: '', status: 'upcoming' });
         setEventModal(true);
     };
     const openEditEvent = async (id) => {
@@ -136,15 +148,28 @@ export default function AdminDashboard({ onLogout }) {
     };
     const saveEvent = async (e) => {
         e.preventDefault();
-        if (editEvent.id) {
-            await DB.update('events', editEvent.id, editEvent);
-            showToast('Event updated!', 'success');
+        const item = { ...editEvent };
+        // Clean up optional fields: convert empty strings to null
+        if (!item.time) item.time = null;
+        if (!item.location) item.location = null;
+        if (!item.description) item.description = null;
+        if (!item.ticket_link) item.ticket_link = null;
+        if (!item.image) item.image = null;
+
+        let result;
+        if (item.id) {
+            result = await DB.update('events', item.id, item);
         } else {
-            await DB.add('events', { ...editEvent });
-            showToast('Event added!', 'success');
+            result = await DB.add('events', item);
         }
-        setEventModal(false);
-        refresh();
+
+        if (result) {
+            showToast(item.id ? 'Event updated!' : 'Event added!', 'success');
+            setEventModal(false);
+            refresh();
+        } else {
+            showToast('Error saving event. Check console.', 'error');
+        }
     };
     const deleteEvent = async (id) => {
         if (confirm('Delete this event?')) {
@@ -154,7 +179,6 @@ export default function AdminDashboard({ onLogout }) {
         }
     };
 
-    // ===== GALLERY =====
     // ===== GALLERY =====
     const openAddGallery = () => {
         setEditGallery({ image: '', caption: '', category: 'performance' });
@@ -166,15 +190,23 @@ export default function AdminDashboard({ onLogout }) {
     };
     const saveGallery = async (e) => {
         e.preventDefault();
-        if (editGallery.id) {
-            await DB.update('gallery', editGallery.id, editGallery);
-            showToast('Photo updated!', 'success');
+        const item = { ...editGallery };
+        if (!item.caption) item.caption = null;
+
+        let result;
+        if (item.id) {
+            result = await DB.update('gallery', item.id, item);
         } else {
-            await DB.add('gallery', { ...editGallery });
-            showToast('Photo added!', 'success');
+            result = await DB.add('gallery', item);
         }
-        setGalleryModal(false);
-        refresh();
+
+        if (result) {
+            showToast(item.id ? 'Photo updated!' : 'Photo added!', 'success');
+            setGalleryModal(false);
+            refresh();
+        } else {
+            showToast('Error saving photo', 'error');
+        }
     };
     const deleteGallery = async (id) => {
         if (confirm('Delete this photo?')) {
@@ -556,7 +588,7 @@ export default function AdminDashboard({ onLogout }) {
                                             <div className="form-group"><label>Venue</label><input type="text" value={editEvent?.venue || ''} onChange={(e) => setEditEvent({ ...editEvent, venue: e.target.value })} required /></div>
                                             <div className="form-group"><label>Location</label><input type="text" value={editEvent?.location || ''} onChange={(e) => setEditEvent({ ...editEvent, location: e.target.value })} /></div>
                                             <div className="form-group"><label>Description</label><textarea value={editEvent?.description || ''} onChange={(e) => setEditEvent({ ...editEvent, description: e.target.value })} rows="3"></textarea></div>
-                                            <div className="form-group"><label>Ticket Link</label><input type="url" value={editEvent?.ticketLink || ''} onChange={(e) => setEditEvent({ ...editEvent, ticketLink: e.target.value })} /></div>
+                                            <div className="form-group"><label>Ticket Link</label><input type="url" value={editEvent?.ticket_link || ''} onChange={(e) => setEditEvent({ ...editEvent, ticket_link: e.target.value })} /></div>
                                             <ImageUploader label="Event Image" value={editEvent?.image || ''} onChange={(val) => setEditEvent({ ...editEvent, image: val })} />
                                             <div className="form-group">
                                                 <label>Status</label>
