@@ -1,7 +1,17 @@
 import { useDB } from '../hooks/useDB';
 
 export default function MusicSection() {
-    const [music] = useDB('music');
+    const [musicData] = useDB('music');
+
+    // Sort music: latest year first, then latest uploaded first
+    const music = [...musicData].sort((a, b) => {
+        const yearA = parseInt(a.year) || 0;
+        const yearB = parseInt(b.year) || 0;
+        if (yearB !== yearA) return yearB - yearA;
+
+        // Fallback to created_at if years are the same
+        return new Date(b.created_at) - new Date(a.created_at);
+    });
 
     return (
         <section id="music" className="section music-section">
